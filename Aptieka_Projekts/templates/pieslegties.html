@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="max-width: 400px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+    <h2 style="text-align: center; color: #2c9062;">Pieslēgties</h2>
+    <form method="POST" action="/pieslegties" style="display: flex; flex-direction: column; gap: 15px;">
+        <input type="text" name="lietotajvards" placeholder="Lietotājvārds" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+
+        <input type="password" id="parole" name="parole" placeholder="Parole" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <label style="font-size: 14px; cursor: pointer; color: #555;">
+            <input type="checkbox" onclick="raditParoli()"> Parādīt paroli
+        </label>
+
+        <button type="submit" style="padding: 10px; background-color: #2c9062; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Ienākt</button>
+    </form>
+    <p style="text-align: center; margin-top: 20px;"><a href="/registreties" style="color: #555;">Nav profila? Reģistrēties</a></p>
+</div>
+
+<script>
+function raditParoli() {
+    var ievade = document.getElementById("parole");
+    if (ievade.type === "password") {
+        ievade.type = "text";
+    } else {
+        ievade.type = "password";
+    }
+}
+</script>
+{% endblock %}

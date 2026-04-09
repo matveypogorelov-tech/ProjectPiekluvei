@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2 style="margin-top: 0; color: #333;">Saraksts</h2>
+
+    {% if medikamenti %}
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Nosaukums</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Kategorija</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Apraksts</th>
+                    <th style="padding: 12px; text-align: left; border-bottom: 2px solid #ddd;">Cena</th>
+                    <th style="padding: 12px; text-align: center; border-bottom: 2px solid #ddd;">Darbība</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for med in medikamenti %}
+                <tr>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd;"><strong>{{ med.nosaukums }}</strong></td>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ kategorijas[med.kategorija_id] }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd;">{{ med.apraksts }}</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd; color: #2c9062; font-weight: bold; font-size: 18px;">{{ "%.2f"|format(med.cena) }} €</td>
+                    <td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center;">
+                        {% if session.get('lietotajvards') %}
+                            <a href="/pievienot_grozam/{{ med.id }}" style="background-color: #2c9062; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: bold;">+ Grozā</a>
+                        {% else %}
+                            <a href="/pieslegties" style="background-color: #6c757d; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; font-size: 12px;">Pieslēgties, lai pirktu</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: #dc3545; font-weight: bold; padding: 20px; background: #fff5f5; border-radius: 5px;">Atvainojiet, nekas netika atrasts.</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aptieka "Veselība"</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f8f9fa; color: #333; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: #2c9062; color: white; padding: 15px 20px; }
+        .top-bar { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo a { color: white; text-decoration: none; font-size: 24px; font-weight: bold; }
+        .search-form { display: flex; flex: 1; margin: 0 30px; }
+        .search-form input { flex: 1; padding: 10px; border: none; border-radius: 4px 0 0 4px; outline: none; }
+        .search-form button { padding: 10px 20px; background-color: #1e6d4a; color: white; border: none; border-radius: 0 4px 4px 0; cursor: pointer; }
+        .auth-links a { color: white; text-decoration: none; margin-left: 15px; font-weight: bold; }
+        .auth-links a:hover { text-decoration: underline; }
+        .admin-badge { background-color: #ffc107; color: black; padding: 3px 8px; border-radius: 4px; font-size: 12px; }
+        .top-nav-container { background-color: white; border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .top-nav { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; flex-wrap: wrap; gap: 10px; }
+        .top-nav a { text-decoration: none; color: #333; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.3s; }
+        .top-nav a:hover { color: #2c9062; }
+        .highlight-red { color: #d9534f !important; }
+        .main-container { max-width: 1200px; margin: 20px auto; display: flex; flex: 1; width: 100%; gap: 20px; padding: 0 20px; box-sizing: border-box; }
+        .sidebar { width: 250px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 15px; align-self: flex-start; }
+        .sidebar h3 { margin-top: 0; color: #2c9062; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 16px; text-transform: uppercase;}
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar li { margin-bottom: 5px; }
+        .sidebar a { text-decoration: none; color: #555; display: block; padding: 8px 10px; border-radius: 4px; transition: 0.2s; font-size: 15px;}
+        .sidebar a:hover { background-color: #e9f5f0; color: #2c9062; font-weight: bold; }
+        .content-area { flex: 1; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); padding: 20px; }
+        footer { background-color: #222; color: #ccc; padding: 40px 20px 20px; margin-top: auto; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; }
+        .footer-section { width: 30%; min-width: 250px; margin-bottom: 20px; }
+        .footer-section h3 { color: white; border-bottom: 1px solid #444; padding-bottom: 10px; }
+        .footer-section p { font-size: 14px; line-height: 1.6; text-align: justify; }
+        .social-icons a { color: white; font-size: 24px; margin-right: 15px; text-decoration: none; transition: 0.3s; }
+        .social-icons a:hover { color: #2c9062; }
+        .footer-bottom { text-align: center; border-top: 1px solid #444; padding-top: 15px; margin-top: 20px; font-size: 12px; color: #777; }
+        .flash-message { background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #c3e6cb; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="top-bar">
+        <div class="logo">
+            <a href="/"><i class="fa-solid fa-notes-medical"></i> Aptieka "Veselība"</a>
+        </div>
+        <form class="search-form" method="GET" action="/">
+            <input type="text" name="meklet" placeholder="Meklēt starp produktiem..." value="{{ vaicajums or '' }}">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+<div class="auth-links">
+            {% if session.get('lietotajvards') %}
+                <a href="/grozs" style="margin-right: 20px; color: #ffeb3b;"><i class="fa-solid fa-cart-shopping"></i> Grozs
+                    {% set groza_skaits = session.get('grozs', {}).values() | sum %}
+                    {% if groza_skaits > 0 %}({{ groza_skaits }}){% endif %}
+                </a>
+
+                <span><i class="fa-regular fa-user"></i> {{ session['lietotajvards'] }}</span>
+                {% if session.get('loma') == 'admin' %}
+                    <a href="/admin" class="admin-badge">Admin</a>
+                {% endif %}
+                <a href="/iziet">Atslēgties</a>
+            {% else %}
+                <a href="/pieslegties">Pieslēgties</a>
+                <a href="/registreties">Reģistrēties</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<div class="top-nav-container">
+    <nav class="top-nav">
+        <a href="/?ipass=akcijas" class="highlight-red">🏷️ AKCIJAS ŠODIEN</a>
+        <a href="/?kategorija=1">VITAMĪNI</a>
+        <a href="/">VISI PRODUKTI</a>
+        <a href="/?ipass=zvaigznes">🧴 KOSMĒTIKAS ZVAIGZNES LĪDZ -50% 🧴</a>
+        <a href="/?ipass=spf">🌞 SPF KOSMĒTIKA 🌞</a>
+    </nav>
+</div>
+
+<div class="main-container">
+    <aside class="sidebar">
+        <h3><i class="fa-solid fa-bars"></i> PREČU KATALOGS</h3>
+        <ul>
+            {% for kat in global_kategorijas %}
+                <li><a href="/?kategorija={{ kat.id }}">{{ kat.nosaukums }}</a></li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <main class="content-area">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Par Mums</h3>
+            <p>Aptieka "Veselība" ir jūsu uzticamais partneris ceļā uz labu pašsajūtu jau daudzus gadus. Mēs piedāvājam rūpīgi atlasītu, sertificētu medikamentu, uztura bagātinātāju un ārstnieciskās kosmētikas klāstu.</p>
+            <p>Mūsu misija ir sniegt profesionālas konsultācijas un palīdzēt jums atrast labākos risinājumus jūsu un jūsu ģimenes veselībai.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Kontakti</h3>
+            <p><i class="fa-solid fa-location-dot"></i> Rīgas iela 1, Daugavpils, LV-5401</p>
+            <p><i class="fa-solid fa-phone"></i> +371 2000 0000</p>
+            <p><i class="fa-solid fa-envelope"></i> info@veseliba.lv</p>
+            <p><i class="fa-solid fa-clock"></i> Darba laiks: P-P: 08:00 - 20:00, S-Sv: 09:00 - 18:00</p>
+        </div>
+        <div class="footer-section">
+            <h3>Sekojiet mums</h3>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2024 Aptieka "Veselība". Visas tiesības aizsargātas. Skolas projekts.
+    </div>
+</footer>
+
+</body>
+</html>
