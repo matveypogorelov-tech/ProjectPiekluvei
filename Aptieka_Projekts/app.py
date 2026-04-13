@@ -240,8 +240,6 @@ def dzest_medikamentu(id):
             db.session.commit()
     return redirect(url_for('admin'))
 
-
-# --- JAUNIE GROZA CEĻI ---
 @app.route('/pievienot_grozam/<int:id>')
 def pievienot_grozam(id):
     # Pārbaudām, vai lietotājs ir pieslēdzies
